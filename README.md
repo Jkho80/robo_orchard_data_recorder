@@ -1,5 +1,13 @@
 # RoboOrchard Data Recorder Toolkit
 
+The RoboOrchard Data Recorder is a comprehensive and robust suite of tools designed for high-fidelity data acquisition in robotics, with a primary focus on the ROS 2 ecosystem. It provides a powerful, configurable backend for recording data into the MCAP format, coupled with a user-friendly web-based application for interactive control and visualization.
+571 / 5,000
+RoboOrchard 数据记录器是一套全面而强大的工具套件，专为机器人领域的高保真数据采集而设计，主要面向 ROS 2 生态系统。它提供了一个功能强大且可配置的后端，用于将数据记录为 MCAP 格式，并配备了一个用户友好的 Web 应用程序，用于交互式控制和可视化。
+
+该项目由[Horizon Robotics](https://github.com/HorizonRobotics/RoboOrchardLab/)旨在应对复杂、真实的数据采集场景所面临的挑战，提供对数据流的精细控制，确保数据完整性，并简化操作人员的工作流程。
+
+在此基础上有做了些许的改动。
+
 ## 1. 启动 3个 相机，命名空间必须严格遵守下面的
 
 打开 3个 终端
@@ -148,7 +156,8 @@ bash challenge_cup/launch_app.sh
 
 ### 5.5 设置本轮采集的数据标签 (后面训练要用到的)
 
-![alt text](image-4.png)
+![alt text](docs/_static/image-4.png)
+
 
 ### 5.6 点击 "Confirm collecting config"
 
@@ -156,6 +165,36 @@ bash challenge_cup/launch_app.sh
 
 ### 5.6 采集数据，每次采集点击 start 开启，stop 结束 一个 episode 
 
+## 6. 数据集转换 MCAP -> LMDB
+### 6.1 进入 robo_orchard_data_recorder/example/workspace 
+```bash
+cd /root/ros2_ws/robo_orchard_data_recorder/example/workspace
+```
+
+### 6.2 根据所需转换的实际数据集信息修改以下配置
+```bash
+# 参考 workspace/mcap_to_lmdb.sh
+python3 -m robo_orchard_lab.dataset.horizon_manipulation.packer.mcap_lmdb_packer \
+    --input_path "/root/ros2_ws/robo_orchard_data_recorder/example/workspace/challenge_cup/2025_10_27-11_17_36/data/JK/put_bottles_dustbin/episode*/*.mcap" \
+    --output_path ./put_bottles_dustbin_1027_2 \
+    --urdf piper_description_dualarm_180.urdf \
+    --image_scale_factor 0.5
+```
+
+参数说明：
+- `--input_path` 实际的 mcap 文件路径
+- `--output_path` lmdb输出路径
+- `--urdf` 数据集机械臂urdf文件（用于将相机位姿写入数据集内）
+- `--image_scale_factor` 相机长宽压缩比，保持0.5即可
+
+### 6.3 运行转换脚本
+```bash
+bash mcap_to_lmdb.sh
+```
+
+## 7. 数据集可视化
+
+具体可查阅 [tests/python/](tests/python/) 
 
 ---
 

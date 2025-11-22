@@ -623,7 +623,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     train_transforms, valid_transforms = build_transforms(config)
-    dataset = RoboTwinLmdbDataset("/data", valid_transforms)
+    dataset = RoboTwinLmdbDataset("/data/", valid_transforms)
 
     print(
         f"dataset length: {dataset.__len__()}, "

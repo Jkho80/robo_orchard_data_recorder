@@ -10,7 +10,7 @@
 在 `data_replay.py` main函数中将下面的data路径换成你保存 (meta.mdb, depth.mdb, image.mdb, index.mdb) 的实际路径
 
 ```python
-dataset = RoboTwinLmdbDataset("/path/to/data/", valid_transforms)
+dataset = RoboTwinLmdbDataset("/data/", valid_transforms)
 ```
 
 ## 2. 运行 data_replay.py
