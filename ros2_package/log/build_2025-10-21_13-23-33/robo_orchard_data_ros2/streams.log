@@ -1,0 +1,40 @@
+[0.500s] Invoking command in '/root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2': CONDA_PROMPT_MODIFIER=(piper_SEMnew) PYTHONPATH=/root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2/prefix_override:/opt/miniconda/envs/piper_SEMnew/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/python3.10/site-packages:${PYTHONPATH} /opt/miniconda/envs/piper_SEMnew/bin/python3.10 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2/build --no-deps symlink_data
+[0.733s] running develop
+[0.736s] /opt/miniconda/envs/piper_SEMnew/lib/python3.10/site-packages/setuptools/command/develop.py:41: EasyInstallDeprecationWarning: easy_install command is deprecated.
+[0.736s] !!
+[0.737s] 
+[0.737s]         ********************************************************************************
+[0.737s]         Please avoid running ``setup.py`` and ``easy_install``.
+[0.737s]         Instead, use pypa/build, pypa/installer or other
+[0.737s]         standards-based tools.
+[0.737s] 
+[0.737s]         See https://github.com/pypa/setuptools/issues/917 for details.
+[0.737s]         ********************************************************************************
+[0.737s] 
+[0.737s] !!
+[0.737s]   easy_install.initialize_options(self)
+[0.860s] running egg_info
+[0.869s] creating robo_orchard_data_ros2.egg-info
+[0.869s] writing robo_orchard_data_ros2.egg-info/PKG-INFO
+[0.869s] writing dependency_links to robo_orchard_data_ros2.egg-info/dependency_links.txt
+[0.869s] writing entry points to robo_orchard_data_ros2.egg-info/entry_points.txt
+[0.869s] writing requirements to robo_orchard_data_ros2.egg-info/requires.txt
+[0.869s] writing top-level names to robo_orchard_data_ros2.egg-info/top_level.txt
+[0.869s] writing manifest file 'robo_orchard_data_ros2.egg-info/SOURCES.txt'
+[0.888s] reading manifest file 'robo_orchard_data_ros2.egg-info/SOURCES.txt'
+[0.888s] reading manifest template 'MANIFEST.in'
+[0.889s] warning: no previously-included files matching '*.pyc' found under directory 'robo_orchard_data_ros2'
+[0.889s] warning: no files found matching '*.json' under directory 'resource'
+[0.889s] writing manifest file 'robo_orchard_data_ros2.egg-info/SOURCES.txt'
+[0.898s] running build_ext
+[0.898s] Creating /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/python3.10/site-packages/robo-orchard-data-ros2.egg-link (link to .)
+[0.899s] Installing image_encoder script to /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/robo_orchard_data_ros2
+[0.899s] Installing mcap_recorder script to /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/robo_orchard_data_ros2
+[0.899s] Installing tf_publisher script to /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/robo_orchard_data_ros2
+[0.899s] 
+[0.899s] Installed /root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2
+[0.899s] running symlink_data
+[0.899s] symbolically linking /root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2/package.xml -> /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/share/robo_orchard_data_ros2
+[0.899s] creating /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/share/robo_orchard_data_ros2/resource
+[0.899s] symbolically linking /root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2/resource/robo_orchard_data_ros2 -> /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/share/robo_orchard_data_ros2/resource
+[0.927s] Invoked command in '/root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2' returned '0': CONDA_PROMPT_MODIFIER=(piper_SEMnew) PYTHONPATH=/root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2/prefix_override:/opt/miniconda/envs/piper_SEMnew/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/python3.10/site-packages:${PYTHONPATH} /opt/miniconda/envs/piper_SEMnew/bin/python3.10 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2/build --no-deps symlink_data

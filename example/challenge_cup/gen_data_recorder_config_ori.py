@@ -45,21 +45,6 @@ def main():
         # controlling the size and content of your dataset.
         include_patterns=[
             # Environment Camera Topics (center, left, right)
-            # "/front/cam_front/color/image_raw/compressed",  # image
-            # "/front/cam_front/depth/image_rect_raw/compressed",  # depth
-            # f"/front/cam_front/color/camera_info",  # camera info
-            # f"/front/cam_front/depth/camera_info",  # camera info
-            # f"/front/cam_front/extrinsics/depth_to_color",
-            # "/left/cam_left/color/image_raw/compressed",  # image
-            # "/left/cam_left/depth/image_rect_raw/compressed",  # depth
-            # f"/left/cam_left/color/camera_info",  # camera info
-            # f"/left/cam_left/depth/camera_info",  # camera info
-            # f"/left/cam_left/extrinsics/depth_to_color",
-            # "/right/cam_right/color/image_raw/compressed",  # image
-            # "/right/cam_right/depth/image_rect_raw/compressed",  # depth
-            # f"/right/cam_right/color/camera_info",  # camera info
-            # f"/right/cam_right/depth/camera_info",  # camera info
-            # f"/right/cam_right/extrinsics/depth_to_color",
             "/middle_camera/color/image_raw/compressed_data",  # image
             "/middle_camera/aligned_depth_to_color/image_raw/compressed_data",  # depth
             f"{camera_namespace}/middle_camera/color/camera_info",  # camera info
@@ -76,18 +61,12 @@ def main():
             f"{camera_namespace}/right_camera/depth/camera_info",  # camera info
             f"{camera_namespace}/right_camera/extrinsics/depth_to_color",
             # Robot Arm Topics (master and puppet for teleoperation)
-            # "/master/joint_left",
-            # "/puppet/joint_left",
-            # "/puppet/end_pose_left",
-            # "/master/joint_right",
-            # "/puppet/joint_right",
-            # "/puppet/end_pose_right",
-            "/arm_left/joint_states_left",
-            "/arm_left/joint_states_left2",
-            "/arm_left/end_pos_left",
-            "/arm_right/joint_states_right",
-            "/arm_right/joint_states_right2",
-            "/arm_right/end_pos_right",
+            "/master/joint_left",
+            "/puppet/joint_left",
+            "/puppet/end_pose_left",
+            "/master/joint_right",
+            "/puppet/joint_right",
+            "/puppet/end_pose_right",
             # Core ROS System Topics
             "/tf_static",
             "/tf",
@@ -114,7 +93,7 @@ def main():
         # This dictionary allows you to define custom settings for specific topics,
         # overriding the defaults set above. This is where the fine-tuning happens.
         topic_spec={
-            # --- Front Camera Overrides ---
+            # --- Center Camera Overrides ---
             "/middle_camera/aligned_depth_to_color/image_raw/compressed_data": TopicSpec(  # noqa: E501
                 stamp_type="msg_header_stamp",
                 # Rename the topic in the MCAP file for a cleaner, more organized dataset structure.
@@ -131,7 +110,7 @@ def main():
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/cameras/middle/color_image/camera_info",
             ),
-            f"{camera_namespace}/middle_camera/depth/camera_info": TopicSpec(  # noqa: E501
+            f"{camera_namespace}/middle_camera/aligned_depth_to_color/camera_info": TopicSpec(  # noqa: E501
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/cameras/middle/depth_image/camera_info",
             ),
@@ -160,7 +139,7 @@ def main():
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/cameras/left/color_image/camera_info",
             ),
-            f"{camera_namespace}/left_camera/depth/camera_info": TopicSpec(  # noqa: E501
+            f"{camera_namespace}/left_camera/aligned_depth_to_color/camera_info": TopicSpec(  # noqa: E501
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/cameras/left/depth_image/camera_info",
             ),
@@ -185,7 +164,7 @@ def main():
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/cameras/right/color_image/camera_info",
             ),
-            f"{camera_namespace}/right_camera/depth/camera_info": TopicSpec(  # noqa: E501
+            f"{camera_namespace}/right_camera/aligned_depth_to_color/camera_info": TopicSpec(  # noqa: E501
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/cameras/right/depth_image/camera_info",
             ),
@@ -195,105 +174,28 @@ def main():
                     durability=DurabilityPolicy.TRANSIENT_LOCAL
                 ),
             ),
-            # "/front/cam_front/color/image_raw/compressed": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/middle/color_image/image_raw",
-            #     frame_rate_monitor=FrameRateMonitor(min_hz=25),
-            # ),
-            # "/front/cam_front/depth/image_rect_raw/compressed": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/middle/depth_image/image_raw",
-            #     frame_rate_monitor=FrameRateMonitor(min_hz=25),
-            # ),
-            # "/front/cam_front/color/camera_info": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/middle/color_image/camera_info",
-            # ),
-            # "/front/cam_front/depth/camera_info": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/middle/depth_image/camera_info",
-            # ),
-            # "/front/cam_front/extrinsics/depth_to_color": TopicSpec(
-            #     rename_topic="/observation/cameras/middle/depth_image/tf",
-            #     # TRANSIENT_LOCAL: This is critical for static transforms. It ensures
-            #     # that even if this message is published only once at startup, any
-            #     # late-joining subscriber (like our recorder) will still receive it.
-            #     qos_profile=QosProfile(
-            #         durability=DurabilityPolicy.TRANSIENT_LOCAL,
-            #     ),
-            # ),
-            # # --- Left Camera Overrides ---
-            # "/left/cam_left/color/image_raw/compressed": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/left/color_image/image_raw",
-            #     frame_rate_monitor=FrameRateMonitor(min_hz=25),
-            # ),
-            # "/left/cam_left/depth/image_rect_raw/compressed": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/left/depth_image/image_raw",
-            #     frame_rate_monitor=FrameRateMonitor(min_hz=25),
-            # ),
-            # "/left/cam_left/color/camera_info": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/left/color_image/camera_info",
-            # ),
-            # "/left/cam_left/depth/camera_info": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/left/depth_image/camera_info",
-            # ),
-            # "/left/cam_left/extrinsics/depth_to_color": TopicSpec(
-            #     rename_topic="/observation/cameras/left/depth_image/tf",
-            #     qos_profile=QosProfile(
-            #         durability=DurabilityPolicy.TRANSIENT_LOCAL
-            #     ),
-            # ),
-            # # --- Right Camera Overrides ---
-            # "/right/cam_right/color/image_raw/compressed": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/right/color_image/image_raw",
-            #     frame_rate_monitor=FrameRateMonitor(min_hz=25),
-            # ),
-            # "/right/cam_right/depth/image_rect_raw/compressed": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/right/depth_image/image_raw",
-            #     frame_rate_monitor=FrameRateMonitor(min_hz=25),
-            # ),
-            # "/right/cam_right/color/camera_info": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/right/color_image/camera_info",
-            # ),
-            # "/right/cam_right/depth/camera_info": TopicSpec(
-            #     stamp_type="msg_header_stamp",
-            #     rename_topic="/observation/cameras/right/depth_image/camera_info",
-            # ),
-            # "/right/cam_right/extrinsics/depth_to_color": TopicSpec(
-            #     rename_topic="/observation/cameras/right/depth_image/tf",
-            #     qos_profile=QosProfile(
-            #         durability=DurabilityPolicy.TRANSIENT_LOCAL
-            #     ),
-            # ),
-            # --- Robot Arm Topics ---
-            "/arm_left/joint_states_left2": TopicSpec(
+            # --- Robot State Topic Renaming ---
+            "/master/joint_left": TopicSpec(
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/robot_state/left_master/joint",
             ),
-            "/arm_left/joint_states_left": TopicSpec(
+            "/puppet/joint_left": TopicSpec(
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/robot_state/left/joint",
             ),
-            "/arm_left/end_pos_left": TopicSpec(
+            "/puppet/end_pose_left": TopicSpec(
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/robot_state/left/end_pose",
             ),
-            "/arm_right/joint_states_right": TopicSpec(
-                stamp_type="msg_header_stamp",
-                rename_topic="/observation/robot_state/right/joint",
-            ),
-            "/arm_right/joint_states_right2": TopicSpec(
+            "/master/joint_right": TopicSpec(
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/robot_state/right_master/joint",
             ),
-            "/arm_right/end_pos_right": TopicSpec(
+            "/puppet/joint_right": TopicSpec(
+                stamp_type="msg_header_stamp",
+                rename_topic="/observation/robot_state/right/joint",
+            ),
+            "/puppet/end_pose_right": TopicSpec(
                 stamp_type="msg_header_stamp",
                 rename_topic="/observation/robot_state/right/end_pose",
             ),
@@ -311,30 +213,21 @@ def main():
         wait_for_topics=set(
             (
                 # Wait for all camera and robot state messages to be available.
-                # "/front/cam_front/color/image_raw/compressed",
-                # "/front/cam_front/depth/image_rect_raw/compressed",
-                # "/right/cam_right/color/image_raw/compressed",
-                # "/right/cam_right/depth/image_rect_raw/compressed",
-                # "/left/cam_left/color/image_raw/compressed",
-                # "/left/cam_left/depth/image_rect_raw/compressed",
                 "/middle_camera/color/image_raw/compressed_data",
                 "/middle_camera/aligned_depth_to_color/image_raw/compressed_data",
                 "/right_camera/color/image_raw/compressed_data",
                 "/right_camera/aligned_depth_to_color/image_raw/compressed_data",
                 "/left_camera/color/image_raw/compressed_data",
                 "/left_camera/aligned_depth_to_color/image_raw/compressed_data",
-                "/arm_left/joint_states_left",
-                "/arm_left/end_pos_left",
-                "/arm_right/joint_states_right",
-                "/arm_right/end_pos_right",
+                "/puppet/joint_left",
+                "/puppet/end_pose_left",
+                "/puppet/joint_right",
+                "/puppet/end_pose_right",
             )
         ),
         # A list of topics that are known to be static (i.e., published once with
         # TRANSIENT_LOCAL durability). This helps the recorder handle them correctly.
         static_topics=[
-            # "/front/cam_front/extrinsics/depth_to_color",
-            # "/left/cam_left/extrinsics/depth_to_color",
-            # "/right/cam_right/extrinsics/depth_to_color",
             f"{camera_namespace}/middle_camera/extrinsics/depth_to_color",
             f"{camera_namespace}/left_camera/extrinsics/depth_to_color",
             f"{camera_namespace}/right_camera/extrinsics/depth_to_color",

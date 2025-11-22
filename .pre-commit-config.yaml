@@ -66,4 +66,14 @@ repos:
         entry: python3 scm/qac/check_license_header.py
         language: python
         types: [python]
-        exclude: (?x)(^3rdparty/|^docs/|^scm/)
+        exclude: |
+          (?x)(
+              ^3rdparty/
+            | ^docs/
+            | ^scm/
+            | ^ros2_package/install/
+            | ^build/
+            | ^install/
+            | ^log/
+            | ^tests
+          )

@@ -1,0 +1,38 @@
+running develop
+/opt/miniconda/envs/piper_SEMnew/lib/python3.10/site-packages/setuptools/command/develop.py:41: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)
+running egg_info
+creating robo_orchard_data_ros2.egg-info
+writing robo_orchard_data_ros2.egg-info/PKG-INFO
+writing dependency_links to robo_orchard_data_ros2.egg-info/dependency_links.txt
+writing entry points to robo_orchard_data_ros2.egg-info/entry_points.txt
+writing requirements to robo_orchard_data_ros2.egg-info/requires.txt
+writing top-level names to robo_orchard_data_ros2.egg-info/top_level.txt
+writing manifest file 'robo_orchard_data_ros2.egg-info/SOURCES.txt'
+reading manifest file 'robo_orchard_data_ros2.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '*.pyc' found under directory 'robo_orchard_data_ros2'
+warning: no files found matching '*.json' under directory 'resource'
+writing manifest file 'robo_orchard_data_ros2.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/python3.10/site-packages/robo-orchard-data-ros2.egg-link (link to .)
+Installing image_encoder script to /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/robo_orchard_data_ros2
+Installing mcap_recorder script to /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/robo_orchard_data_ros2
+Installing tf_publisher script to /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/lib/robo_orchard_data_ros2
+
+Installed /root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2
+running symlink_data
+symbolically linking /root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2/package.xml -> /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/share/robo_orchard_data_ros2
+creating /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/share/robo_orchard_data_ros2/resource
+symbolically linking /root/ros2_ws/robo_orchard_data_recorder/ros2_package/build/robo_orchard_data_ros2/resource/robo_orchard_data_ros2 -> /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/share/robo_orchard_data_ros2/resource

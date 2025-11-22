@@ -28,30 +28,38 @@ def main():
     This node subscribes to raw color image topics, compresses them using JPEG, and
     republishes the compressed data on new topics.
     """
+
+    # Define the base namespace for the camera topics.
+    # This makes it easy to change if your robot's topic structure is different.
+    # For example, if your topics are under "/my_robot/",
+    # you would change this value.
     camera_namespace = "/agilex"
 
     config = ImageEncodingConfig(
         # Specify the compression algorithm to use.
         # Here, we're using JPEG, which is a lossy format that provides
         # excellent compression ratios for color images.
+        # This is ideal for reducing bandwidth and storage,
+        # trading a small amount of
+        # image quality for a significant reduction in size.
         codec=JpegCodecConfig(),
         # Set the number of parallel worker threads for compression.
+        # Increasing this on a multi-core CPU can improve performance,
+        # but it also increases CPU load.
+        # A good starting point is the number of available CPU cores.
         num_workers=8,
-        # Map input topics (raw color images) to output topics (compressed data)
-        # topic_mapping={
-        #     # Front camera color image
-        #     "/front/cam_front/color/image_raw": "/front/cam_front/color/image_raw/compressed",
-        #     # Left camera color image
-        #     "/left/cam_left/color/image_raw": "/left/cam_left/color/image_raw/compressed",
-        #     # Right camera color image
-        #     "/right/cam_right/color/image_raw": "/right/cam_right/color/image_raw/compressed",
-        # },
+        # This is the core of the configuration. It maps input topics (the raw data)
+        # to output topics (where the compressed data will be published).
+        # The format is: {"input_topic_name": "output_topic_name"}
         topic_mapping={
             f"{camera_namespace}/left_camera/color/image_raw": "/left_camera/color/image_raw/compressed_data",  # noqa: E501
             f"{camera_namespace}/middle_camera/color/image_raw": "/middle_camera/color/image_raw/compressed_data",  # noqa: E501
             f"{camera_namespace}/right_camera/color/image_raw": "/right_camera/color/image_raw/compressed_data",  # noqa: E501
         },
         # Define the maximum number of messages to hold in the input queue.
+        # This acts as a buffer to prevent messages from being dropped
+        # if there's a temporary spike in data rate
+        # or processing load.
         max_queue_size=128,
     )
 

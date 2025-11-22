@@ -28,29 +28,35 @@ def main():
     This node subscribes to raw depth image topics, compresses them, and republishes
     the compressed data on new topics.
     """
+
+    # Define the base namespace for the camera topics.
+    # This makes it easy to change if your robot's topic structure is different.
+    # For example, if your topics are under "/my_robot/",
+    # you would change this value.
     camera_namespace = "/agilex"
 
     config = ImageEncodingConfig(
         # Specify the compression algorithm to use.
         # Here, we're using PNG, which is a lossless format suitable for depth data.
+        # You could potentially define and use other codecs here.
         codec=PngCodecConfig(),
         # Set the number of parallel worker threads for compression.
+        # Increasing this on a multi-core CPU can improve performance,
+        # but it also increases CPU load.
+        # A good starting point is the number of available CPU cores.
         num_workers=8,
-        # Map input topics (raw depth images) to output topics (compressed data)
-        # topic_mapping={
-        #     # Front camera depth image
-        #     "/front/cam_front/depth/image_rect_raw": "/front/cam_front/depth/image_rect_raw/compressed",
-        #     # Left camera depth image
-        #     "/left/cam_left/depth/image_rect_raw": "/left/cam_left/depth/image_rect_raw/compressed",
-        #     # Right camera depth image
-        #     "/right/cam_right/depth/image_rect_raw": "/right/cam_right/depth/image_rect_raw/compressed",
-        # },
+        # This is the core of the configuration. It maps input topics (the raw data)
+        # to output topics (where the compressed data will be published).
+        # The format is: {"input_topic_name": "output_topic_name"}
         topic_mapping={
             f"{camera_namespace}/left_camera/depth/image_rect_raw": "/left_camera/aligned_depth_to_color/image_raw/compressed_data",  # noqa: E501
             f"{camera_namespace}/middle_camera/depth/image_rect_raw": "/middle_camera/aligned_depth_to_color/image_raw/compressed_data",  # noqa: E501
             f"{camera_namespace}/right_camera/depth/image_rect_raw": "/right_camera/aligned_depth_to_color/image_raw/compressed_data",  # noqa: E501
         },
         # Define the maximum number of messages to hold in the input queue.
+        # This acts as a buffer to prevent messages from being dropped
+        # if there's a temporary spike in data rate
+        # or processing load.
         max_queue_size=128,
     )
 
