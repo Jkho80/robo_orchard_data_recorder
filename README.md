@@ -1,10 +1,8 @@
 # RoboOrchard Data Recorder Toolkit
 
-The RoboOrchard Data Recorder is a comprehensive and robust suite of tools designed for high-fidelity data acquisition in robotics, with a primary focus on the ROS 2 ecosystem. It provides a powerful, configurable backend for recording data into the MCAP format, coupled with a user-friendly web-based application for interactive control and visualization.
-571 / 5,000
 RoboOrchard 数据记录器是一套全面而强大的工具套件，专为机器人领域的高保真数据采集而设计，主要面向 ROS 2 生态系统。它提供了一个功能强大且可配置的后端，用于将数据记录为 MCAP 格式，并配备了一个用户友好的 Web 应用程序，用于交互式控制和可视化。
 
-该项目由[Horizon Robotics](https://github.com/HorizonRobotics/RoboOrchardLab/)旨在应对复杂、真实的数据采集场景所面临的挑战，提供对数据流的精细控制，确保数据完整性，并简化操作人员的工作流程。
+该项目由[Horizon Robotics](https://github.com/HorizonRobotics/RoboOrchardLab/)开发旨在应对复杂、真实的数据采集场景所面临的挑战，提供对数据流的精细控制，确保数据完整性，并简化操作人员的工作流程。
 
 在此基础上有做了些许的改动。
 
