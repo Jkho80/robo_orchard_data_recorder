@@ -6,7 +6,11 @@ RoboOrchard 数据记录器是一套全面而强大的工具套件，专为机�
 
 在此基础上有做了些许的改动。
 
-对于 RoboOrchard Data Recorder 从零搭建、部署、依赖包等介绍可查阅 [RoboOrchard Data Recorder Toolkit](README_origin.md) 
+RoboOrchard Data Recorder 从零搭建、部署、依赖包等介绍可查阅 [RoboOrchard Data Recorder Toolkit](README_origin.md) 
+
+RoboOrchard Data Recorder 从零配置修改等介绍可查阅 [Challenge Cup](example/challenge_cup/) 
+
+该文档是用于快速在已有平台上采集数据，无需从零搭建环境。
 
 ## 1. 启动 3个 相机
 
