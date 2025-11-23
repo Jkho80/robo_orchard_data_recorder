@@ -6,6 +6,8 @@ RoboOrchard 数据记录器是一套全面而强大的工具套件，专为机�
 
 在此基础上有做了些许的改动。
 
+对于RoboOrchard Data Recorder 的具体介绍可查阅 [RoboOrchard Data Recorder Toolkit](README_origin.md) 
+
 ## 1. 启动 3个 相机
 
 打开 3个 终端
