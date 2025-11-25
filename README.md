@@ -14,7 +14,8 @@ RoboOrchard Data Recorder 从零配置修改等介绍可查阅 [Challenge Cup](e
 
 ## 1. 启动 3个 相机
 
-打开 3个 终端
+**打开 3个 终端**，用于启动三台 RealSense D435i（左右 + 中间）深度相机。
+每台相机需要单独开一个终端启动。
 
 ### 1.1 进入 d435_ws2 目录 并激活环境 (三个都要)
 
@@ -22,8 +23,12 @@ RoboOrchard Data Recorder 从零配置修改等介绍可查阅 [Challenge Cup](e
 cd /root/ros2_ws/d435_ws2
 source install/setup.bash
 ```
+确保环境正确加载后再运行相机驱动。
 
 ### 1.2 分别 运行下面三个命令
+
+下面三个命令分别启动 middle / left / right 相机。
+其中 `serial_no` 必须与现有的设备一致，用于确保 ROS 绑定到正确的物理相机。
 
 ``` bash
 ros2 launch realsense2_camera rs_launch.py \
@@ -55,10 +60,18 @@ ros2 launch realsense2_camera rs_launch.py \
     serial_no:="'405622074908'"
 ```
 
+> 说明：
+> - align_depth.enable=true 用于对齐深度图和 RGB 图。
+> - initial_reset=true 可避免相机异常状态导致的启动失败。
+> - 若相机连接顺序变动，可通过 rs-enumerate-devices 查看序列号。
 
-## 2. 启动 2个 图像压缩 (/agilex/*_camera/color/image_raw -> /*_camera/color/image_raw/compressed_data) 终端
 
-打开 2个 终端
+## 2. 启动 2个 图像压缩 (RGB + 深度)
+
+这个工具使用内部编码器（image encoder）将图像压缩 color/image_raw → color/image_raw/compressed_data
+这会极大减少 MCAP 文件体积。
+
+**打开 2 个终端**，分别启动 RGB 编码器 和 深度编码器。
 
 ### 2.1 进入 robo_orchard_data_recorder/example/challenge_cup 目录
 ```bash
@@ -71,18 +84,22 @@ source /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/setup.bash
 ```
 
 ### 2.3 分别运行下面两个指令
-
+**RGB编码器：**
 ```bash
 bash challenge_cup/launch_image_encoder.sh
 ```
-
+**深度编码器：**
 ```bash
 bash challenge_cup/launch_depth_encoder.sh
 ```
+> 说明：
+> 这两个脚本会自动订阅之前启动的所有相机。
 
 ## 3. 启动 2个 机械臂
+机械臂部分用于采集操作数据，包括关节状态、末端位姿等。
+如果重启主机或重新插拔机械臂，必须重新识别 CAN 口。
 
-打开 1个 终端
+**打开 1个 终端**
 
 ### 3.1 进入 piper_ros 目录并激活环境
 ```bash
@@ -94,11 +111,13 @@ source install/setup.bash
 ```bash
 bash find_all_can_port.sh
 ```
+> 说明：该脚本会自动扫描已连接的机械臂并输出设备名及端口号，如 `can0, can1, ...`
 
 ### 3.3 激活所有 3.2 脚本找到的can口 (如果重启了 机械臂)
 ```bash
 bash can_muti_activate.sh
 ```
+> 说明：如果脚本内与上面的获取的设备及端口号不一致，可以根据上面脚本的输出内容来修改 `can_muti_activate.sh`
 
 ### 3.4 运行机械臂启动脚本
 ```bash
@@ -107,7 +126,10 @@ ros2 launch piper start_multi_arms.launch.py
 
 ## 4. 启动 静态 TF 发布器
 
-打开 1个 终端
+这个工具需要统一各相机、机械臂、末端执行器之间的坐标关系。
+启动现有的 ROS2 静态 TF 发布功能包用于发布固定变换。
+
+**打开 1个 终端**
 
 ### 4.1 进入 robo_orchard_data_recorder/example/challenge_cup 目录
 ```bash
@@ -127,9 +149,15 @@ bash challenge_cup/launch_static_tf_publisher.sh
 
 
 
-## 5. 启动 数据采集平台
+## 5. 启动 数据采集平台 （Web UI）
+这是 RoboOrchard Data Recorder 的核心界面，用于：
+- 设置采集用户
+- 设置任务标签
+- 配置 episode
+- 启动 / 停止录制
+- 实时查看多相机与机械臂数据流
 
-打开 1个 终端
+**打开 1个 终端**
 
 ### 5.1 进入 robo_orchard_data_recorder 目录下 
 ```bash
@@ -145,31 +173,43 @@ source /root/ros2_ws/robo_orchard_data_recorder/ros2_package/install/setup.bash
 ```bash
 bash challenge_cup/launch_app.sh
 ```
-
+启动后会自动打开 Web 界面（通常运行在 http://localhost:8501 或 :8502）
 ![alt text](docs/_static/image.png)
 
 ### 5.4 设置本轮采集的用户名
 
+> 说明：设置"采集者身份"，用于后续数据管理。
+
 ![alt text](docs/_static/image-1.png)
 
-### 5.5 设置本轮采集的数据标签 (后面训练要用到的)
+### 5.5 设置本轮采集的数据标签（非常重要）
+
+标签会写入 `dataset/meta.mdb` 中，后续训练会根据此标签加载数据。
+
+支持：
+- 文本格式标签（如动作类型）
+- 自定义字段
+- 每次采集前都可修改
 
 ![alt text](docs/_static/image-2.png)
 
 ![alt text](docs/_static/image-3.png)
 
-### 5.5 设置本轮采集的数据标签 (后面训练要用到的)
-
 ![alt text](docs/_static/image-4.png)
-
 
 ### 5.6 点击 "Confirm collecting config"
 
 ![alt text](docs/_static/image-5.png)
 
-### 5.6 采集数据，每次采集点击 start 开启，stop 结束 一个 episode 
+### 5.6 开始采集
 
-## 6. 数据集转换 MCAP -> LMDB
+- 点击 Start 记录一个 episode
+- 点击 Stop 结束
+- 每个 episode 会生成一个文件夹与一个 MCAP 文件
+
+## 6. 数据集转换：MCAP -> LMDB
+RoboOrchard Data Recorder原始数据为 MCAP，为了训练模型需要转换为 LMDB。
+
 ### 6.1 进入 robo_orchard_data_recorder/example/workspace 
 ```bash
 cd /root/ros2_ws/robo_orchard_data_recorder/example/workspace
@@ -185,20 +225,33 @@ python3 -m robo_orchard_lab.dataset.horizon_manipulation.packer.mcap_lmdb_packer
     --image_scale_factor 0.5
 ```
 
-参数说明：
-- `--input_path` 实际的 mcap 文件路径
-- `--output_path` lmdb输出路径
-- `--urdf` 数据集机械臂urdf文件（用于将相机位姿写入数据集内）
-- `--image_scale_factor` 相机长宽压缩比，保持0.5即可
+> 参数说明：
+> - `--input_path` 要转换的 mcap 文件路径，可用 episode* 通配符
+> - `--output_path` lmdb 输出路径
+> - `--urdf` 指定机械臂模型，用于带入 camera extrinsic（将相机位姿写入数据集）
+> - `--image_scale_factor` 相机长宽压缩比，保持0.5即可
 
 ### 6.3 运行转换脚本
 ```bash
 bash mcap_to_lmdb.sh
 ```
+转换完成后，会将所有 MCAP 数据集写成一个结构化的 LMDB 数据集。
+
+> LMDB 数据集结构说明：
+> - image.mdb 图像数据文件
+> - depth.mdb 深度数据文件
+> - meta.mdb 数据集元信息
+> - lock.mdb 锁文件
 
 ## 7. 数据集可视化
+我们有自己的可视化工具，用于检查转换结果和调试数据。
 
-具体可查阅 [tests/python/](tests/python/) 
+具体操作请查看 [tests/python/](tests/python/) 
+
+> 可视化包含：
+> - 图像与深度可视化
+> - 机械臂轨迹回放
+> - episode 汇总检查
 
 ---
 
